@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AutoSAAS.models
@@ -12,5 +13,6 @@ namespace AutoSAAS.models
         public string Hq_phone_country_code { get; set; }
         public string Hq_country { get; set; }
         public string Hq_city { get; set; }
+        public IList<User> users { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace AutoSAAS.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BrandId = table.Column<int>(nullable: false),
+                    BrandId = table.Column<int>(nullable: true),
                     Color = table.Column<string>(nullable: true),
                     Model = table.Column<string>(nullable: true),
                     chasetNumber = table.Column<string>(nullable: true)
@@ -85,7 +85,7 @@ namespace AutoSAAS.Migrations
                         column: x => x.BrandId,
                         principalTable: "Brands",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,7 +95,6 @@ namespace AutoSAAS.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
-                    Access = table.Column<bool>(nullable: false),
                     UserGroupId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -118,8 +117,8 @@ namespace AutoSAAS.Migrations
                     Name = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     JobTitle = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: false),
-                    UserGroupId = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: true),
+                    UserGroupId = table.Column<int>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true)
                 },
@@ -131,13 +130,13 @@ namespace AutoSAAS.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Users_UserGroups_UserGroupId",
                         column: x => x.UserGroupId,
                         principalTable: "UserGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

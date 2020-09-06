@@ -104,6 +104,7 @@ namespace AutoSAAS.Controllers
                     JobTitle = user.JobTitle,
                     CompanyId = user.CompanyId,
                     UserGroupId = user.UserGroupId,
+                    Id = user.Id
                 });
             }
             return Ok(usersDto);
@@ -120,6 +121,7 @@ namespace AutoSAAS.Controllers
             }
 
             var userDto = new UserForDataDto {
+                    Id = user.Id,
                     Name = user.Name,
                     Phone = user.Phone,
                     JobTitle = user.JobTitle,
@@ -130,7 +132,7 @@ namespace AutoSAAS.Controllers
             return Ok(userDto);
         }
 
-        // TODO: Put by id
-        // TODO: delete by id
+        // // TODO: Put by id
+        // // TODO: delete by id
     }
 }

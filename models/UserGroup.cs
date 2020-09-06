@@ -8,7 +8,8 @@ namespace AutoSAAS.models
         public int Id { get; set; }
         public string Name_ar { get; set; }
         public string Name_en { get; set; }
-        public IEnumerable<Permission> Permissions { get; set; }
+        public IList<User> users { get; set; }
+        public IList<Permission> Permissions { get; set; }
 
     }
 }

@@ -68,9 +68,6 @@ namespace AutoSAAS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Access")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -90,7 +87,7 @@ namespace AutoSAAS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("JobTitle")
@@ -108,7 +105,7 @@ namespace AutoSAAS.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserGroupId")
+                    b.Property<int?>("UserGroupId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -157,7 +154,7 @@ namespace AutoSAAS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Color")
@@ -178,7 +175,7 @@ namespace AutoSAAS.Migrations
 
             modelBuilder.Entity("AutoSAAS.models.Permission", b =>
                 {
-                    b.HasOne("AutoSAAS.models.UserGroup", null)
+                    b.HasOne("AutoSAAS.models.UserGroup", "userGroup")
                         .WithMany("Permissions")
                         .HasForeignKey("UserGroupId");
                 });
@@ -186,25 +183,19 @@ namespace AutoSAAS.Migrations
             modelBuilder.Entity("AutoSAAS.models.User", b =>
                 {
                     b.HasOne("AutoSAAS.models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("users")
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("AutoSAAS.models.UserGroup", "UserGroup")
-                        .WithMany()
-                        .HasForeignKey("UserGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("users")
+                        .HasForeignKey("UserGroupId");
                 });
 
             modelBuilder.Entity("AutoSAAS.models.Vehicle", b =>
                 {
                     b.HasOne("AutoSAAS.models.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Vehicles")
+                        .HasForeignKey("BrandId");
                 });
 #pragma warning restore 612, 618
         }
