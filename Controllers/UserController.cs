@@ -20,12 +20,13 @@ namespace AutoSAAS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class UserController : ControllerBase
     {
+
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
         private readonly DataContext _context;
-        public AuthController(IAuthRepository repo, IConfiguration config, DataContext context)
+        public UserController(IAuthRepository repo, IConfiguration config, DataContext context)
         {
             _config = config;
             _repo = repo;
@@ -33,7 +34,7 @@ namespace AutoSAAS.Controllers
         }
 
 
-        // POST api/auth/register
+        // POST api/user/register
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
