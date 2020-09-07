@@ -56,6 +56,7 @@ namespace AutoSAAS.Controllers
             return StatusCode(201);
         }
 
+        // POST api/user/login
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
@@ -169,7 +170,23 @@ namespace AutoSAAS.Controllers
 
             return Ok(userDto);
         }
-        // // TODO: delete by id
+        
+        // DELETE api/user/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserById(int id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync( u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Id: "+ user.Id +", Name: "+ user.Name+", IS DELETED!");
+
+        }
 
         private bool UserExists(int id)
         {
