@@ -9,6 +9,7 @@ namespace AutoSAAS.Dtos
         public MappingProfile()
         {
             CreateMap<User, UserForDataDto>();
+            CreateMap<UserForDataDto, User>();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace AutoSAAS
             services.AddControllers();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddCors();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddControllersWithViews();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

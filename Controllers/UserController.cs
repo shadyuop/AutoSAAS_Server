@@ -22,12 +22,14 @@ namespace AutoSAAS.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IMapper _mapper;
 
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
         private readonly DataContext _context;
-        public UserController(IAuthRepository repo, IConfiguration config, DataContext context)
+        public UserController(IAuthRepository repo, IConfiguration config, DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _config = config;
             _repo = repo;
             _context = context;
@@ -70,7 +72,7 @@ namespace AutoSAAS.Controllers
 
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(_config.GetSection("AppSettings:Token").Value));
-            
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -83,29 +85,24 @@ namespace AutoSAAS.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new {
+            return Ok(new
+            {
                 token = tokenHandler.WriteToken(token)
             });
         }
 
-        
+
         // GET /api/user
         [HttpGet("")]
-        public  async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             var usersDto = new List<UserForDataDto>();
             var users = await _context.Users.ToListAsync();
             // Mapper.Map<User, UserForDataDto>
             foreach (var user in users)
             {
-                usersDto.Add(new UserForDataDto {
-                    Name = user.Name,
-                    Phone = user.Phone,
-                    JobTitle = user.JobTitle,
-                    CompanyId = user.CompanyId,
-                    UserGroupId = user.UserGroupId,
-                    Id = user.Id
-                });
+                
+                usersDto.Add(_mapper.Map<UserForDataDto>(user));
             }
             return Ok(usersDto);
         }
@@ -120,19 +117,71 @@ namespace AutoSAAS.Controllers
                 return NotFound();
             }
 
-            var userDto = new UserForDataDto {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Phone = user.Phone,
-                    JobTitle = user.JobTitle,
-                    CompanyId = user.CompanyId,
-                    UserGroupId = user.UserGroupId,
-                };
+            var userDto = _mapper.Map<UserForDataDto>(user);
 
             return Ok(userDto);
         }
 
-        // // TODO: Put by id
+ 
+        // PUT api/user/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserForDataDto userDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            userDto.Id = id;
+            var userInDb = _context.Users.SingleOrDefault(u => u.Id == id);
+            if (userInDb == null)
+                return NotFound();
+
+            _mapper.Map(userDto, userInDb);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (DbUpdateException)
+            {
+                if (!CompanyExists(id))
+                {
+                    return NotFound("Company Id doesnt exist in database");
+                }
+                else if (!UserGroupExists(id))
+                {
+                    return NotFound("Company Id doesnt exist in database");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(userDto);
+        }
         // // TODO: delete by id
+
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.Id == id);
+        }
+        private bool CompanyExists(int id)
+        {
+            return _context.Companies.Any(e => e.Id == id);
+        }
+        private bool UserGroupExists(int id)
+        {
+            return _context.UserGroups.Any(e => e.Id == id);
+        }
     }
 }
