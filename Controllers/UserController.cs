@@ -48,7 +48,9 @@ namespace AutoSAAS.Controllers
 
             var userToCreate = new User
             {
-                Name = userForRegisterDto.Name
+                Name = userForRegisterDto.Name,
+                UserGroupId = 1,
+                CompanyId = 1
             };
 
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
@@ -86,9 +88,12 @@ namespace AutoSAAS.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            var userToReturn = _mapper.Map<UserForDataDto>(userFromRepo);
+
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user = userToReturn
             });
         }
 

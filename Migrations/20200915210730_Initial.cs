@@ -73,6 +73,7 @@ namespace AutoSAAS.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BrandId = table.Column<int>(nullable: true),
+                    BrandIDId = table.Column<int>(nullable: true),
                     Color = table.Column<string>(nullable: true),
                     Model = table.Column<string>(nullable: true),
                     chasetNumber = table.Column<string>(nullable: true)
@@ -81,8 +82,8 @@ namespace AutoSAAS.Migrations
                 {
                     table.PrimaryKey("PK_Vehicles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vehicles_Brands_BrandId",
-                        column: x => x.BrandId,
+                        name: "FK_Vehicles_Brands_BrandIDId",
+                        column: x => x.BrandIDId,
                         principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -155,9 +156,9 @@ namespace AutoSAAS.Migrations
                 column: "UserGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_BrandId",
+                name: "IX_Vehicles_BrandIDId",
                 table: "Vehicles",
-                column: "BrandId");
+                column: "BrandIDId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

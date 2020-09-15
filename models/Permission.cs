@@ -9,8 +9,9 @@ namespace AutoSAAS.models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        [ForeignKey("UserGroup")]
         public int? UserGroupId { get; set; }
+        [ForeignKey("UserGroupId")]
+        
         public UserGroup userGroup { get; set; }
     }
 }

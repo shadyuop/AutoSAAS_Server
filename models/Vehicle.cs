@@ -7,8 +7,8 @@ namespace AutoSAAS.models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Brand")]
         public int? BrandId { get; set; }
+        [ForeignKey("BrandIDId")]
         public Brand Brand { get; set; }
         public string Color { get; set; }
         public string Model { get; set; }

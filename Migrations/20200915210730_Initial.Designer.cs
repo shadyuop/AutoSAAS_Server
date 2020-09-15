@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoSAAS.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200906233745_Initial")]
+    [Migration("20200915210730_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,9 @@ namespace AutoSAAS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("BrandIDId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("BrandId")
                         .HasColumnType("INTEGER");
 
@@ -170,7 +173,7 @@ namespace AutoSAAS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
+                    b.HasIndex("BrandIDId");
 
                     b.ToTable("Vehicles");
                 });
@@ -197,7 +200,7 @@ namespace AutoSAAS.Migrations
                 {
                     b.HasOne("AutoSAAS.models.Brand", "Brand")
                         .WithMany("Vehicles")
-                        .HasForeignKey("BrandId");
+                        .HasForeignKey("BrandIDId");
                 });
 #pragma warning restore 612, 618
         }

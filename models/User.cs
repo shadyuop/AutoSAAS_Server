@@ -12,12 +12,14 @@ namespace AutoSAAS.models
         public string Phone { get; set; }
         public string JobTitle { get; set; }
 
-        [ForeignKey("Company")]
+        
         public int? CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
         public Company Company { get; set; }
 
-        [ForeignKey("UserGroup")]
+        
         public int? UserGroupId { get; set; }
+        [ForeignKey("UserGroupId")]
         public UserGroup UserGroup { get; set; }
 
         public byte[] PasswordHash { get; set; }
