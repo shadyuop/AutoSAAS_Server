@@ -16,6 +16,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace AutoSAAS
 {
@@ -35,6 +38,10 @@ namespace AutoSAAS
             services.AddControllers();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddCors();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddControllersWithViews();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

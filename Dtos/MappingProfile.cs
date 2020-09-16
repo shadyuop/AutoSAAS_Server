@@ -10,6 +10,8 @@ namespace AutoSAAS.Dtos
         {
             CreateMap<User, UserForDataDto>();
             CreateMap<UserForDataDto, User>();
+            CreateMap<UserGroupForTransmitionDto, UserGroup>();
+            CreateMap<UserGroup, UserGroupForTransmitionDto>();
         }
     }
 }

@@ -16,6 +16,6 @@ namespace AutoSAAS.Dtos
         public int? UserGroupId { get; set; }
         [ForeignKey("UserGroupId")]
 
-        public UserGroup UserGroup { get; set; }
+        public UserGroupForTransmitionDto UserGroup { get; set; }
     }
 }

@@ -102,13 +102,38 @@ namespace AutoSAAS.Controllers
         [HttpGet("")]
         public async Task<IActionResult> GetUsers()
         {
-            var usersDto = new List<UserForDataDto>();
-            var users = await _context.Users.ToListAsync();
+            var usersDto = new List<Object>();
+            var users = await _context.Users
+                // .Include(u => u.UserGroup)
+                // .ThenInclude(ug => ug.Permissions)
+                // .Include(u => u.Company)
+                .Select(u => new {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Phone = u.Phone,
+                    JobTitle = u.JobTitle,
+                    UserGroup = new {
+                        u.UserGroup.Id,
+                        u.UserGroup.Name_ar,
+                        u.UserGroup.Name_en,
+                        u.UserGroup.Permissions
+                    },
+                    Company = new {
+                        u.Company.Id,
+                        u.Company.Name_ar,
+                        u.Company.Name_en,
+                        u.Company.Hq_city,
+                        u.Company.Hq_country,
+                        u.Company.Hq_phone_country_code,
+                        u.Company.Hq_phone
+                    }
+                })
+                .ToListAsync();
             // Mapper.Map<User, UserForDataDto>
             foreach (var user in users)
             {
                 
-                usersDto.Add(_mapper.Map<UserForDataDto>(user));
+                usersDto.Add(user);
             }
             return Ok(usersDto);
         }
@@ -117,15 +142,37 @@ namespace AutoSAAS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users
+            .Select(u => new {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Phone = u.Phone,
+                    JobTitle = u.JobTitle,
+                    UserGroup = new {
+                        u.UserGroup.Id,
+                        u.UserGroup.Name_ar,
+                        u.UserGroup.Name_en,
+                        u.UserGroup.Permissions
+                    },
+                    Company = new {
+                        u.Company.Id,
+                        u.Company.Name_ar,
+                        u.Company.Name_en,
+                        u.Company.Hq_city,
+                        u.Company.Hq_country,
+                        u.Company.Hq_phone_country_code,
+                        u.Company.Hq_phone
+                    }
+                })
+            .SingleOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var userDto = _mapper.Map<UserForDataDto>(user);
+            // var userDto = _mapper.Map<UserForDataDto>(user);
 
-            return Ok(userDto);
+            return Ok(user);
         }
 
  
