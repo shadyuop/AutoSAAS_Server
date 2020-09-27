@@ -31,10 +31,30 @@ namespace AutoSAAS
 
         public IConfiguration Configuration { get; }
 
+        // public void ConfigureDevelopmentServices(IServiceCollection services)
+        // {
+        //     services.AddDbContext<DataContext>(x => x.UseSqlite
+        //     (Configuration.GetConnectionString("DefaultConnection")));
+
+        //     ConfigureServices(services);
+        // }
+        // public void ConfigureProuctiontServices(IServiceCollection services)
+        // {
+        //     services.AddDbContext<DataContext>(x => x.UseMySql
+        //     (Configuration.GetConnectionString("DefaultConnection")));
+
+        //     ConfigureServices(services);
+        // }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseMySql
+            (Configuration.GetConnectionString("DefaultConnection"),
+            mySqlOptionsAction: sqlOptions => {
+                sqlOptions.EnableRetryOnFailure();
+            }));
+
             services.AddControllers();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddCors();
@@ -71,7 +91,18 @@ namespace AutoSAAS
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            /* app.UseMvc(routes => {
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    DefaultServiceProviderFactory: new {
+                        controller= "Fallback",
+                        action = "Index"
+                    }
+                );
+            }); */
+            
+            // app.UseStaticFiles();
+            // app.UseDefaultFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

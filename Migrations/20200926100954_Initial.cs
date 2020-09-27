@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoSAAS.Migrations
@@ -12,7 +13,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_ar = table.Column<string>(nullable: true),
                     Name_en = table.Column<string>(nullable: true)
                 },
@@ -26,7 +27,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_ar = table.Column<string>(nullable: true),
                     Name_en = table.Column<string>(nullable: true),
                     Hq_phone = table.Column<string>(nullable: true),
@@ -44,7 +45,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name_ar = table.Column<string>(nullable: true),
                     Name_en = table.Column<string>(nullable: true)
                 },
@@ -58,7 +59,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -71,7 +72,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     BrandId = table.Column<int>(nullable: true),
                     BrandIDId = table.Column<int>(nullable: true),
                     Color = table.Column<string>(nullable: true),
@@ -94,7 +95,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     UserGroupId = table.Column<int>(nullable: true)
                 },
@@ -114,7 +115,7 @@ namespace AutoSAAS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     JobTitle = table.Column<string>(nullable: true),
